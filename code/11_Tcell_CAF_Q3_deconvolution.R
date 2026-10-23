@@ -1,6 +1,6 @@
 # GeoMx T-cell and CAF deconvolution
 # Inputs in the working directory:
-#   counts.csv, q3norm_nonlog.csv, meta_cleaned_v5.xlsx,
+#   counts.csv, q3norm_nonlog.csv or q3norm_nonlog.csv.gz, meta_cleaned_v5.xlsx,
 #   ref_scAtlasVAE.rds, CAF_reference.rds
 # q3norm_nonlog.csv contains linear Q3-normalized expression.
 # Outputs: T-cell IE/II and CAF Desert/Excluded/Inflamed PDF panels only.
@@ -29,7 +29,8 @@ if (as.character(packageVersion("SpatialDecon")) != "1.18.0") {
 # 2. Input data
 getwd()
 
-input_files <- c("counts.csv", "q3norm_nonlog.csv", "meta_cleaned_v5.xlsx",
+q3_file <- if (file.exists("q3norm_nonlog.csv")) "q3norm_nonlog.csv" else "q3norm_nonlog.csv.gz"
+input_files <- c("counts.csv", q3_file, "meta_cleaned_v5.xlsx",
                  "ref_scAtlasVAE.rds", "CAF_reference.rds")
 if (any(!file.exists(input_files))) {
   stop("Missing input files in the working directory: ",
@@ -38,7 +39,7 @@ if (any(!file.exists(input_files))) {
 
 meta <- read_excel("meta_cleaned_v5.xlsx") |> as.data.frame()
 cts  <- read.csv("counts.csv", row.names = 1, check.names = FALSE) |> as.matrix()
-norm <- read.csv("q3norm_nonlog.csv", row.names = 1, check.names = FALSE) |> as.matrix()
+norm <- read.csv(q3_file, row.names = 1, check.names = FALSE) |> as.matrix()
 
 ref_tcell <- readRDS("ref_scAtlasVAE.rds")
 ref_caf   <- readRDS("CAF_reference.rds")

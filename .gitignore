@@ -17,3 +17,10 @@ neural_lr/
 quick_plots/
 patient_stability/
 cellphonedb/
+
+# Processed inputs and compact reference matrices.
+!/counts.csv
+!/meta_cleaned_v5.xlsx
+!/q3norm_nonlog.csv.gz
+!/ref_scAtlasVAE.rds
+!/CAF_reference.rds

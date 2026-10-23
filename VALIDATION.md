@@ -11,7 +11,7 @@ The 2026-10-22 reorganization places all analysis scripts in `code/`. The three-
 - The processed matrix contains 14,833 biological genes and `NegProbe-WTX`. The existing DE/ranking implementation retains all supplied features. The negative probe is a technical control and is not interpreted as a biological marker; changing the tested feature universe requires a documented rerun.
 - Deconvolution proportions are relative to the respective reference matrix. T-cell and CAF panels have separate denominators and are not absolute tissue cell counts.
 
-The final handoff check on 2026-10-22 verified the active script paths, their input/output dependencies, direct package coverage in the lockfile and the supplied input hashes. The separate input-check script is not required and is omitted. The syntax workflow discovers the current R scripts without a fixed historical file count. These changes do not modify the analysis scripts or their numerical results. The collaborator's own workstation and access to the separately supplied inputs remain untested.
+The final handoff check on 2026-10-22 verified the active script paths, their input/output dependencies, direct package coverage in the lockfile and the supplied input hashes. The separate input-check script is not required and is omitted. The syntax workflow discovers the current R scripts without a fixed historical file count. These changes do not modify the analysis scripts or their numerical results. The collaborator's own workstation remains untested.
 
 ## Environment installer
 
@@ -34,3 +34,7 @@ The [Windows verification run](https://github.com/YaominLi/GeoMx_revised-public/
 The Windows job executed the unchanged scripts 01, 02, 03, 05, 06 and 11 on synthetic counts, metadata and reference matrices from a working path containing Chinese characters and a space. It generated nine nonempty PDFs and thirteen ranking tables, and completed a two-set GSEA using `SnowParam(4, type = "SOCK")`, the backend selected by script 07 on Windows. The test did not upload study data. The Windows package-version table and session records are retained in the development repository under `review/windows_validation_20261022/`.
 
 This establishes the tested environment and core-script execution on a Windows runner. It does not represent a full study-cohort rerun on Windows, execution of scripts 08-10, all 52 study GSEA calculations, or validation of the collaborator's own workstation. The Linux supplied-data checks above provide separate evidence for the numerical outputs.
+
+## Bundled processed inputs
+
+The five processed data/reference files are included in the repository. The Q3 matrix is stored as `q3norm_nonlog.csv.gz`; its decompressed bytes match the original CSV checksum. Under R 4.5.1, `read.csv()` returned identical objects from the compressed and original files (14,834 features by 155 AOIs). Script 11 accepts both forms and preserves the same calculations. All R scripts passed syntax parsing after the input-path update. This distribution check did not repeat the full analysis or the Windows environment test.

@@ -1,6 +1,6 @@
 # Running the analysis
 
-This repository contains code and environment records. The data and GMT files are supplied separately. Repository access alone is not sufficient to run the analyses.
+This repository contains code, environment records, and five processed data/reference files. Only the four MSigDB GMT files must be obtained separately for GSEA.
 
 ## 1. Prepare the project
 
@@ -34,13 +34,13 @@ The complete package list is in `renv.lock`; `environment/package_versions.csv` 
 
 Installation requires access to CRAN and Bioconductor and write access to the project library/cache. Archived package versions may require source compilation: Windows needs the matching Rtools45 toolchain, macOS needs command-line tools and any required Fortran toolchain, and Linux needs compilers and package development libraries. A missing system library must be installed through the operating system. Package version locking does not freeze operating-system libraries or guarantee bit-identical numerical results across platforms. The Windows R 4.5.1/Rtools45 restore, fresh-session verification and synthetic-data core-script test have passed on a Windows Server 2022 runner. See `VALIDATION.md` for the execution record and scope.
 
-## 2. Place the nine input files
+## 2. Input locations
 
 | Location relative to the project root | Required for |
 | --- | --- |
 | `counts.csv` | Expression analyses and deconvolution |
 | `meta_cleaned_v5.xlsx` | AOI, patient, slide, compartment and subtype annotations |
-| `q3norm_nonlog.csv` | Deconvolution; linear Q3 expression |
+| `q3norm_nonlog.csv.gz` | Deconvolution; losslessly compressed linear Q3 expression |
 | `ref_scAtlasVAE.rds` | Deconvolution; small T-cell reference matrix |
 | `CAF_reference.rds` | Deconvolution; small CAF reference matrix |
 | `gene_sets/h.all.v2025.1.Hs.symbols.gmt` | GSEA; Hallmark collection |
@@ -48,7 +48,7 @@ Installation requires access to CRAN and Bioconductor and write access to the pr
 | `gene_sets/c5.all.v2025.1.Hs.symbols.gmt` | GSEA; C5 collection |
 | `gene_sets/c7.all.v2025.1.Hs.symbols.gmt` | GSEA; C7 collection |
 
-The project owner supplies the five data/reference files. Obtain the exact MSigDB 2025.1 human-symbol GMT files through the normal MSigDB access process; details are in `gene_sets/README.md`. `environment/input_checksums.csv` records the nine expected file identities. Do not substitute a newer GMT release or a log-transformed Q3 matrix.
+The five data/reference files are included at the repository root and must remain there. Script 11 reads `q3norm_nonlog.csv.gz` directly, or uses the original `q3norm_nonlog.csv` when present; no manual extraction is needed. Obtain the exact MSigDB 2025.1 human-symbol GMT files through the normal MSigDB access process; details are in `gene_sets/README.md`. `environment/input_checksums.csv` records the nine expected file identities. Do not substitute a newer GMT release or a log-transformed Q3 matrix.
 
 The two reference RDS files are small matrices, not the original single-cell objects. `geomx_obj_processed.RDS`, the original large single-cell objects and CellPhoneDB tables are not required. The workflow starts after acquisition and probe QC and does not reconstruct those upstream steps.
 
