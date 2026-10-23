@@ -1,0 +1,44 @@
+name: Windows R environment
+
+on:
+  push:
+    paths:
+      - 'code/00_install_environment.R'
+      - 'renv.lock'
+      - '.github/workflows/environment-check.yml'
+      - '.github/tests/windows_smoke.R'
+      - 'code/*.R'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  restore:
+    runs-on: windows-2022
+    timeout-minutes: 90
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use an isolated package cache
+        shell: pwsh
+        run: '"RENV_PATHS_ROOT=$env:RUNNER_TEMP/geomx-renv" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append'
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: '4.5.1'
+          rtools-version: '45'
+      - name: Restore and verify from an empty project library
+        run: Rscript --vanilla code/00_install_environment.R
+      - name: Verify in a fresh R session
+        run: Rscript --vanilla code/00_install_environment.R
+      - name: Run the Windows synthetic-data test
+        run: Rscript --vanilla .github/tests/windows_smoke.R
+      - name: Retain environment records
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-environment-records
+          path: renv/setup-report/
+          if-no-files-found: ignore
