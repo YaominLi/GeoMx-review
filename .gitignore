@@ -24,3 +24,5 @@ cellphonedb/
 !/q3norm_nonlog.csv.gz
 !/ref_scAtlasVAE.rds
 !/CAF_reference.rds
+
+!/all_genes_DE_with_expr_and_fdr_tumor.csv

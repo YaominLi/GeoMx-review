@@ -29,3 +29,7 @@ The Q3 matrix is losslessly compressed; no manual extraction is needed. Script 1
 These files are sufficient for scripts 01–03, 05–06 and 11 after environment installation. GSEA additionally requires the four MSigDB 2025.1 GMT files listed in [gene_sets/README.md](gene_sets/README.md), placed in `gene_sets/`. GMT files are not bundled. File checksums are recorded in [environment/input_checksums.csv](environment/input_checksums.csv).
 
 Large original GeoMx and single-cell objects are not required for this downstream workflow and are not included. Analysis definitions are recorded in the script comments; validation and interpretation limits are described in [VALIDATION.md](VALIDATION.md).
+
+## Tumor differential-expression results
+
+[all_genes_DE_with_expr_and_fdr_tumor.csv](all_genes_DE_with_expr_and_fdr_tumor.csv) contains the supplied tumor differential-expression results for 14,834 features, including log fold changes, nominal P values, FDR values and group mean expression. The table is provided at the project root for review.
